@@ -6,7 +6,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import org.lia.lab4_v3.DBEntity.PointEntity;
 import org.lia.lab4_v3.DBEntity.UserEntity;
-import org.lia.lab4_v3.Models.Coordinates;
+import org.lia.lab4_v3.Models.AddPointRequest;
 import java.sql.Timestamp;
 
 import java.util.ArrayList;
@@ -24,14 +24,14 @@ public class ResultTableBean {
         return res;
     }
 
-    public PointEntity addResult(Coordinates coordinates, UserEntity user) {
+    public PointEntity addResult(AddPointRequest addPointRequest, UserEntity user) {
         PointEntity point = new PointEntity();
-        double x = coordinates.getX();
-        double y = coordinates.getY();
-        double r = coordinates.getR();
-        point.setX(coordinates.getX());
-        point.setY(coordinates.getY());
-        point.setR(coordinates.getR());
+        double x = addPointRequest.getX();
+        double y = addPointRequest.getY();
+        double r = addPointRequest.getR();
+        point.setX(addPointRequest.getX());
+        point.setY(addPointRequest.getY());
+        point.setR(addPointRequest.getR());
         point.setCreator_id(user.getId());
         point.setDate(new Timestamp(System.currentTimeMillis()));
         boolean result = (x >= 0 && y >= 0 && x <= r && y <= r) ||

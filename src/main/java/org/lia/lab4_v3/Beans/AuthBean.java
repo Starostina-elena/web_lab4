@@ -23,6 +23,12 @@ public class AuthBean {
                 .getSingleResult();
     }
 
+    public UserEntity getUserById(long id) throws NoResultException {
+        return (UserEntity)entityManager.createQuery("SELECT u FROM UserEntity u WHERE u.id = :id")
+                .setParameter("id", id)
+                .getSingleResult();
+    }
+
     public UserEntity register(String username, String password) throws PersistenceException {
         entityManager.persist(new UserEntity(username, password));
         return (UserEntity)entityManager.createQuery("SELECT u FROM UserEntity u WHERE u.username = :username AND u.password = :password")

@@ -1,32 +1,39 @@
 package org.lia.lab4_v3.REST;
 
 import jakarta.ejb.EJB;
+import jakarta.ejb.EJBTransactionRolledbackException;
 import jakarta.ejb.Stateless;
+import jakarta.persistence.PersistenceException;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.lia.lab4_v3.Beans.AuthBean;
 import org.lia.lab4_v3.Beans.ResultTableBean;
 import org.lia.lab4_v3.DBEntity.PointEntity;
 import org.lia.lab4_v3.DBEntity.UserEntity;
-import jakarta.ws.rs.core.*;
-import org.lia.lab4_v3.Models.Coordinates;
+import org.lia.lab4_v3.Models.AddPointRequest;
+import org.lia.lab4_v3.Models.TableRequest;
 
 import java.util.List;
+import java.util.Objects;
 
-@Path("/result-table")
+@Path("/points")
 @Stateless
 public class ResultTableResource {
 
     @EJB
     private ResultTableBean resultTableBean;
+    @EJB
+    private AuthBean authBean;
 
     @GET
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getResults(
-            @Context SecurityContext securityContext
-    ) {
-        UserEntity user = (UserEntity) securityContext.getUserPrincipal();
+    public Response getResults(TableRequest tableRequest) {
+        UserEntity user = checkUser(tableRequest.getCreatorId(), tableRequest.getUsername(), tableRequest.getPassword());
+        if (user == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
         List<PointEntity> results = resultTableBean.getResults(user);
         return Response.ok().entity(results).build();
     }
@@ -34,12 +41,26 @@ public class ResultTableResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addPoint(
-            @Context SecurityContext securityContext,
-            Coordinates coordinates
-    ) {
-        UserEntity user = (UserEntity) securityContext.getUserPrincipal();
-        PointEntity point = resultTableBean.addResult(coordinates, user);
+    public Response addPoint(AddPointRequest addPointRequest) {
+        UserEntity user = checkUser(addPointRequest.getCreatorId(), addPointRequest.getUsername(), addPointRequest.getPassword());
+        if (user == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        PointEntity point = resultTableBean.addResult(addPointRequest, user);
         return Response.ok().entity(point).build();
+    }
+
+    public UserEntity checkUser(long id, String username, String password) {
+        UserEntity user;
+        try {
+            user = authBean.getUserById(id);
+        } catch (PersistenceException | EJBTransactionRolledbackException e) {
+            return null;
+        }
+        if (user == null || !Objects.equals(user.getUsername(), username) ||
+                !Objects.equals(user.getPassword(), password)) {
+            return null;
+        }
+        return user;
     }
 }
