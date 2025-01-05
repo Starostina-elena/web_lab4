@@ -13,7 +13,9 @@ import org.lia.lab4_v3.DBEntity.PointEntity;
 import org.lia.lab4_v3.DBEntity.UserEntity;
 import org.lia.lab4_v3.Models.AddPointRequest;
 import org.lia.lab4_v3.Models.TableRequest;
+import org.lia.lab4_v3.Utils.PasswordHash;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,13 +54,15 @@ public class ResultTableResource {
 
     public UserEntity checkUser(long id, String username, String password) {
         UserEntity user;
+        PasswordHash passwordHash;
         try {
             user = authBean.getUserById(id);
-        } catch (PersistenceException | EJBTransactionRolledbackException e) {
+            passwordHash = new PasswordHash();
+        } catch (PersistenceException | EJBTransactionRolledbackException | NoSuchAlgorithmException e) {
             return null;
         }
         if (user == null || !Objects.equals(user.getUsername(), username) ||
-                !Objects.equals(user.getPassword(), password)) {
+                !Objects.equals(user.getPassword(), passwordHash.hash(password))) {
             return null;
         }
         return user;

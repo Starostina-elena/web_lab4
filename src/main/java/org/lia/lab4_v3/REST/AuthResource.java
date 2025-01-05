@@ -11,7 +11,9 @@ import jakarta.ws.rs.core.Response;
 import org.lia.lab4_v3.Beans.AuthBean;
 import org.lia.lab4_v3.DBEntity.UserEntity;
 import org.lia.lab4_v3.Models.LoginRequest;
+import org.lia.lab4_v3.Utils.PasswordHash;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 @Path("/auth")
@@ -27,9 +29,10 @@ public class AuthResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(LoginRequest loginRequest) {
         try {
-            UserEntity user = authBean.login(loginRequest.getUsername(), loginRequest.getPassword());
+            PasswordHash passwordHash = new PasswordHash();
+            UserEntity user = authBean.login(loginRequest.getUsername(), passwordHash.hash(loginRequest.getPassword()));
             return Response.ok().entity(user).build();
-        } catch (NoResultException | EJBTransactionRolledbackException e) {
+        } catch (NoResultException | EJBTransactionRolledbackException | NoSuchAlgorithmException e) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
 
@@ -41,9 +44,10 @@ public class AuthResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response register(LoginRequest loginRequest) {
         try {
-            UserEntity user = authBean.register(loginRequest.getUsername(), loginRequest.getPassword());
+            PasswordHash passwordHash = new PasswordHash();
+            UserEntity user = authBean.register(loginRequest.getUsername(), passwordHash.hash(loginRequest.getPassword()));
             return Response.ok().entity(user).build();
-        } catch (PersistenceException | EJBTransactionRolledbackException e) {
+        } catch (PersistenceException | EJBTransactionRolledbackException | NoSuchAlgorithmException e) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
