@@ -15,7 +15,8 @@ import java.sql.Timestamp;
 @Builder
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence-generator-users")
+    @SequenceGenerator(name = "sequence-generator-users", sequenceName = "users_id_seq", allocationSize = 1)
     @Column(name = "id")
     private long id;
 

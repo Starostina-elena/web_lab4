@@ -1,6 +1,7 @@
 package org.lia.lab4_v3.REST;
 
 import jakarta.ejb.EJB;
+import jakarta.ejb.EJBTransactionRolledbackException;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceException;
@@ -10,6 +11,8 @@ import jakarta.ws.rs.core.Response;
 import org.lia.lab4_v3.Beans.AuthBean;
 import org.lia.lab4_v3.DBEntity.UserEntity;
 import org.lia.lab4_v3.Models.LoginRequest;
+
+import java.sql.SQLException;
 
 @Path("/auth")
 @Stateless
@@ -26,7 +29,7 @@ public class AuthResource {
         try {
             UserEntity user = authBean.login(loginRequest.getUsername(), loginRequest.getPassword());
             return Response.ok().entity(user).build();
-        } catch (NoResultException e) {
+        } catch (NoResultException | EJBTransactionRolledbackException e) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
 
@@ -40,10 +43,9 @@ public class AuthResource {
         try {
             UserEntity user = authBean.register(loginRequest.getUsername(), loginRequest.getPassword());
             return Response.ok().entity(user).build();
-        } catch (PersistenceException e) {
+        } catch (PersistenceException | EJBTransactionRolledbackException e) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
-
     }
 
 }
