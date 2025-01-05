@@ -15,8 +15,8 @@ import java.sql.Timestamp;
 @Builder
 public class PointEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence-generator")
-    @SequenceGenerator(name = "sequence-generator", sequenceName = "points_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private long id;
 
     @Column(name = "x")
@@ -31,5 +31,8 @@ public class PointEntity {
 
     @Column(name = "date")
     private Timestamp date;
+
+    @Column(name = "creator_id")
+    private long creator_id;
 
 }

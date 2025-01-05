@@ -15,21 +15,17 @@ import java.sql.Timestamp;
 @Builder
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence-generator")
-    @SequenceGenerator(name = "sequence-generator", sequenceName = "users_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private long id;
 
-    @Column(name = "x")
-    private double x;
-    @Column(name = "y")
-    private double y;
-    @Column(name = "r")
-    private double r;
+    @Column(name = "username")
+    private String username;
+    @Column(name = "password")
+    private String password;
 
-    @Column(name = "result")
-    private boolean result;
-
-    @Column(name = "date")
-    private Timestamp date;
-
+    public UserEntity(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }
