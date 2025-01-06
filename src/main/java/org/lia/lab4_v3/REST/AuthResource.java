@@ -23,7 +23,7 @@ public class AuthResource {
     @EJB
     private AuthBean authBean;
 
-    @GET
+    @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
