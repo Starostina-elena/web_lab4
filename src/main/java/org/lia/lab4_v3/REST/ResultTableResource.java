@@ -28,9 +28,10 @@ public class ResultTableResource {
     @EJB
     private AuthBean authBean;
 
-    @GET
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("/")
     public Response getResults(TableRequest tableRequest) {
         UserEntity user = checkUser(tableRequest.getCreatorId(), tableRequest.getUsername(), tableRequest.getPassword());
         if (user == null) {
@@ -43,6 +44,7 @@ public class ResultTableResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("/add")
     public Response addPoint(AddPointRequest addPointRequest) {
         UserEntity user = checkUser(addPointRequest.getCreatorId(), addPointRequest.getUsername(), addPointRequest.getPassword());
         if (user == null) {
