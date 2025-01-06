@@ -11,11 +11,19 @@ export default createStore({
             state.username = username;
             state.password = password;
             state.creatorId = creatorId;
+        },
+        clearUser(state) {
+            state.username = '';
+            state.password = '';
+            state.creatorId = null;
         }
     },
     actions: {
         saveUser({ commit }, user) {
             commit('setUser', user);
+        },
+        clearUser({ commit }) {
+            commit('clearUser');
         }
     },
     getters: {
