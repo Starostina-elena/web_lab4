@@ -1,7 +1,7 @@
 <template>
   <form class="logout-form" @submit.prevent="handleSubmit">
     <div class="form-block">
-      <p class="username">{{ username }}</p>
+      <p class="username">{{ getUsername }}</p>
     </div>
     <br>
     <div class="form-block">
@@ -37,9 +37,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .form-block {
-  margin: 20px 0;
   text-align: right;
   flex-direction: column;
+}
+.username {
+  margin-bottom: -10px;
 }
 .button-submit {
   padding: 7px;
