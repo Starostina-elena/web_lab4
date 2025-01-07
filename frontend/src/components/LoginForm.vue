@@ -2,14 +2,14 @@
   <form class="login-form" @submit.prevent="handleSubmit">
     <div class="form-block">
         <label for="username">Имя пользователя</label>
-        <input id="username" name="username" required ref="username">
+        <input id="username" name="username" class="input-field" required ref="username">
     </div>
     <div class="form-block">
         <label for="password">Пароль</label>
-        <input type="password" id="password" name="password" required ref="password">
+        <input type="password" id="password" name="password" class="input-field" required ref="password">
     </div>
     <div class="form-block">
-      <button type="submit">{{ btnTitle }}</button>
+      <button type="submit" class="button-submit">{{ btnTitle }}</button>
     </div>
     <div class="form-block">
       <p id="login-message">{{ errorMessage }}</p>
@@ -80,5 +80,54 @@ h3 {
 }
 a {
   color: #42b983;
+}
+label {
+  width: 150px;
+  padding-top: 5px;
+}
+.form-block {
+  margin: 20px 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+.button-submit {
+  padding: 7px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background-color: #3DA028;
+  color: white;
+}
+.login-form {
+  text-align: center;
+}
+.input-field {
+  border-radius: 10px;
+  padding: 7px;
+}
+@media (max-width: 783px) {
+  .login-form {
+    width: 300px;
+  }
+  .input-field {
+    margin-left: 5px;
+    margin-top: 10px;
+  }
+  .form-block {
+    flex-direction: column;
+    margin: 10px;
+  }
+}
+@media (min-width: 784px) {
+  .login-form {
+    width: 700px;
+  }
+  .input-field {
+    margin-left: 20px;
+  }
+  .form-block {
+    flex-direction: row;
+  }
 }
 </style>
