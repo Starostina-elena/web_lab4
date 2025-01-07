@@ -1,15 +1,22 @@
 <template>
   <form class="logout-form" @submit.prevent="handleSubmit">
     <div class="form-block">
-      <button type="submit">Выйти</button>
+      <p class="username">{{ username }}</p>
+    </div>
+    <br>
+    <div class="form-block">
+      <button class="button-submit" type="submit">Выйти</button>
     </div>
   </form>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'LogoutButton',
+  computed: {
+    ...mapGetters(['getUsername'])
+  },
   props: {
     serverUrl: {
       type: String,
@@ -29,10 +36,18 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
+.form-block {
+  margin: 20px 0;
+  text-align: right;
+  flex-direction: column;
 }
-a {
-  color: #42b983;
+.button-submit {
+  padding: 7px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background-color: #3DA028;
+  color: white;
+  width: 60px;
 }
 </style>

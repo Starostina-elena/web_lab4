@@ -74,4 +74,19 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#history {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#history th, #history td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#history th {
+  font-weight: normal;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+}
 </style>

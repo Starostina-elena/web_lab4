@@ -3,25 +3,25 @@
     <div class="form-block">
       <label>X</label>
       <div>
-        <label v-for="value in xAndRValues" :key="value">
+        <label v-for="value in xAndRValues" :key="value" class="radio-label">
           <input type="radio" name="x" :value="value" v-model="selectedX"> {{ value }}
         </label>
       </div>
     </div>
     <div class="form-block">
         <label for="y">Y</label>
-        <input id="y" name="y" required ref="y" type="number" min="-3" max="5" step="0.01" >
+        <input class="input-field" id="y" name="y" required ref="y" type="number" min="-3" max="5" step="0.01" >
     </div>
     <div class="form-block">
       <label for="r">R</label>
       <div>
-        <label v-for="value in xAndRValues" :key="value">
+        <label v-for="value in xAndRValues" :key="value" class="radio-label">
           <input type="radio" name="r" :value="value" v-model="selectedR"> {{ value }}
         </label>
       </div>
     </div>
     <div class="form-block">
-      <button type="submit">{{ btnTitle }}</button>
+      <button class="button-submit" type="submit">{{ btnTitle }}</button>
     </div>
   </form>
 </template>
@@ -97,7 +97,6 @@ export default {
           })
           .then(data => {
             this.$emit('pointAdded', data);
-            //this.$router.push('/points');
           })
           .catch(error => {
             console.error('Error:', error);
@@ -110,10 +109,36 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
+.form-block {
+  margin: 20px 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
 }
-a {
-  color: #42b983;
+.button-submit {
+  padding: 7px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background-color: #3DA028;
+  color: white;
+  width: 90px;
+}
+.input-field {
+  border-radius: 10px;
+  padding: 7px;
+}
+
+@media (max-width: 783px) {
+  .radio-label {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .radio-label input[type="radio"] {
+    margin-top: 0px;
+    margin-right: 2px;
+    vertical-align: middle;
+  }
 }
 </style>
